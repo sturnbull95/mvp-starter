@@ -19,6 +19,10 @@ const controller = {
     db.Favorites.remove({
       img
     }).then(data => res.status(203).send('deleted')).catch(err => console.error(err))
+  },
+  type: (req,res) => {
+    res.send(req.body)
+    console.log(req.body)
   }
 
   // ,

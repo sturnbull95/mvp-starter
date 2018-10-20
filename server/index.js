@@ -24,13 +24,14 @@ app.use('/api',router)
 // app.use(express.static(__dirname + '/../node_modules'));
 app.post('/types',function(req,res){
   helpers.getTypes(function(obj){
-
+    //console.log('ART',JSON.parse(obj.body).message)
+    res.send(JSON.parse(obj.body).message)
   })
 })
 app.post('/favorites', function(req,res){
-  console.log('Ahhhhh',req.body)
+  //console.log('Ahhhhh',req.body)
   helpers.getDogsByBreed(req.body.data,function(obj){
-    console.log('OHMYGOD',obj)
+    //console.log('OHMYGOD',obj)
     for(var i = 0; i < JSON.parse(obj.body).message.length; i++){
       var temp = new Save.Favorites({img:JSON.parse(obj.body).message[i]})
       temp.save(function(err){

@@ -13,7 +13,8 @@ db.once('open', function() {
 
 var itemSchema = mongoose.Schema({
   name: String,
-  img: String
+  img: String,
+  types: Array
 });
 
 var Favorites = mongoose.model('Favorites', itemSchema);
