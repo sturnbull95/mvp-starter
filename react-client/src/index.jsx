@@ -16,18 +16,12 @@ class App extends React.Component {
     }
     this.click = this.click.bind(this)
   }
-  styling(){
-    return {
-      display: 'inline-block'
-    }
-  }
   componentDidMount() {
     if(this.state.types.length === 0){
       $.ajax({
         method:'POST',
-        url: '/types',
+        url: '/api/types',
         success: (data) => {
-          console.log('HERE',data)
           var arr = []
           for(var i in data){
             arr.push(i)
@@ -43,7 +37,8 @@ class App extends React.Component {
       });
     }
     $.ajax({
-      url: '/favorites',
+      method: 'GET',
+      url: '/api/favorites',
       success: (data) => {
         this.setState({
           items: data
@@ -55,7 +50,6 @@ class App extends React.Component {
     });
   }
   click(){
-    console.log('hello')
     if(document.getElementById('pics').style.display === 'none'){
       document.getElementById('pics').style.display = ''
       document.getElementById('types').style.display = 'none'
@@ -65,7 +59,6 @@ class App extends React.Component {
     }
   }
   onClick(term){
-    console.log(term)
     $.ajax({
       method: "DELETE",
       url: "/api/favorites",
@@ -73,20 +66,15 @@ class App extends React.Component {
     }).done(res => console.log(res))
   }
   search (term) {
-    console.log(`${term} was searched`);
-    if(term.length > 0){
+    if(term.length > 0 && this.state.types.includes(term)){
       $.ajax({
         method: "POST",
-        url: "/favorites",
+        url: "/api/favorites",
         data: {data: term}
       })
-    .then(res => {
-      //res.send(JSON.parse(res.body).message)
-      console.log(JSON.parse(res.body).message)
-      this.setState({
-        items: JSON.parse(res.body).message
-      })
-      console.log('LSKDJFLSDJFL',res)
+    .done(res => {
+      this.componentDidMount()
+      document.getElementById('val').value = ''
     });
     }
   }
@@ -99,16 +87,12 @@ class App extends React.Component {
     e.currentTarget.width -= 600;
   }
   typeClick(breed){
-    console.log('BREDD',breed)
-    console.log(this.state.types.slice(0,10))
     $.ajax({
       method: "POST",
-      url: "/favorites",
+      url: "/api/favorites",
       data: {data: breed},
       success: (data) => {
-        this.setState({
-          items: data
-        })
+        this.componentDidMount()
       },
       error: (err) => {
         console.log('err', err);
@@ -117,19 +101,38 @@ class App extends React.Component {
     document.getElementById('types').style.display = 'none'
     document.getElementById('pics').style.display = ''
   }
-  
+
 
   render () {
-
+    var styles = {
+	   color:'blue',
+	   fontWeight:'bold',
+     fontFamily: "Courier New",
+     textAlign: "center",
+     textDecoration: 'underline'
+   }
+   var buttonStyle = {
+     display: 'flex',
+     flexDirection: 'column',
+     alignItems: 'center'
+   }
+   var typeStyle = {
+     height: 100
+   }
     return (<div >
-      <h1 color="red">My Favorite Dogs</h1><button onClick={this.click}>All Breeds</button>
-      <div id='types'>
+      <h1 style={styles}>My Favorite Dogs</h1>
+      <div style={buttonStyle}>
+        <button onClick={this.click}>All Breeds</button>
+      </div>
+      <div style={buttonStyle}>
+        <Search repos = {this.state.repos} onSearch={this.search.bind(this)}/>
+      </div>
+      <div style={typeStyle} id='types'>
         <Type types={this.state.types} click ={this.typeClick.bind(this)}/>
       </div>
-      <div id="pics">
+      <div style={buttonStyle} id="pics">
         <List items={this.state.items} off={this.off.bind(this)} hover={this.hover.bind(this)} click={this.onClick.bind(this)}/>
       </div>
-      <Search repos = {this.state.repos} onSearch={this.search.bind(this)}/>
     </div>)
   }
 }
