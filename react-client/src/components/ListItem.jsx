@@ -2,7 +2,7 @@ import React from 'react';
 
 const ListItem = (props) => (
   <div>
-    { props.item.description }
+    { <img src = {props.item} onClick={()=>props.click(props.item)}/> }
   </div>
 )
 

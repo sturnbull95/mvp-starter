@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/dogs');
 
 var db = mongoose.connection;
 
@@ -12,14 +12,47 @@ db.once('open', function() {
 });
 
 var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+  name: String,
+  img: String
 });
 
-var Item = mongoose.model('Item', itemSchema);
+var Favorites = mongoose.model('Favorites', itemSchema);
+
+let help = (obj, parsedRepos) => {
+  var repoObj = {};
+  Favorites.find({name:obj.name}, function(err,dogs){
+    if(repos.length === 0){
+      console.log('here')
+      repoObj.name = obj.name;
+      repoObj.img = obj.img;
+
+      var dog = new Favorites(repoObj);
+
+      dog.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+      })
+    } else{
+      console.log('not important');
+    }
+
+  })
+}
+let save = (obj,callback) => {
+  console.log(obj)
+  var parsedRepos = obj;
+  //let flag = false;
+  for (var i = 0; i < parsedRepos.length; i++) {
+    var newPar = {name:obj.name,img:obj.img}
+    console.log(newPar)
+    help(newPar);
+    }
+}
+
 
 var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
+  Favorites.find({}, function(err, items) {
     if(err) {
       callback(err, null);
     } else {
@@ -27,5 +60,6 @@ var selectAll = function(callback) {
     }
   });
 };
-
+module.exports.Favorites = Favorites;
 module.exports.selectAll = selectAll;
+module.exports.save = save;

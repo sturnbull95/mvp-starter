@@ -1,8 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 // UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-var favorites = require('../database-mysql');
+var Save = require('../database-mongo');
 const morgan = require('morgan');
+const helpers = require('../helpers/fetchDogs.js')
 
 // var items = require('../database-mongo');
 
@@ -12,25 +13,43 @@ const router = require('./routes');
 const path = require('path')
 
 // UNCOMMENT FOR REACT
-app.use(express.static(__dirname + '/../react-client/dist'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'../react-client/dist')));
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use('/api',router)
 // UNCOMMENT FOR ANGULAR
 // app.use(express.static(__dirname + '/../angular-client'));
 // app.use(express.static(__dirname + '/../node_modules'));
+app.post('/favorites', function(req,res){
+  console.log(req.body)
+  helpers.getDogsByBreed(req.body.data,function(obj){
+    console.log(obj,req.body)
+    res.send(obj)
+  })
+})
 
-// app.get('/favorites', function (req, res) {
-//   favorites.selectAll(function(err, data) {
-//     if(err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
+app.post('/api/favorites', function(req,res){
+  console.log(req.body)
+  // helpers.getDogsByBreed(req.body.data,function(obj){
+  //   console.log(obj,req.body)
+  //   res.send(obj)
+  // })
+})
+// app.post('/spec/favorites', function(req,res){
+//   console.log(req.body)
+//
+// })
+app.get('/favorites', function (req, res) {
+  Save.Favorites.find(function(err,dogs){
+    if(err){
+      console.log(err)
+    } else{
+      res.send(dogs)
+    }
+  })
+});
 
 app.listen(port, function() {
   console.log('listening on port 3000!');

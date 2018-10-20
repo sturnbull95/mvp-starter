@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const controller = require('./controller')
+
+
 router.route('/favorites')
 .get(controller.get)
 .post(controller.post)
