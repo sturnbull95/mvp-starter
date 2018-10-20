@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 // UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-var Save = require('../database-mongo');
+var Save = require('../database-mongo/index.js');
 const morgan = require('morgan');
 const helpers = require('../helpers/fetchDogs.js')
 
@@ -23,10 +23,17 @@ app.use('/api',router)
 // app.use(express.static(__dirname + '/../angular-client'));
 // app.use(express.static(__dirname + '/../node_modules'));
 app.post('/favorites', function(req,res){
-  console.log(req.body)
+  console.log('Ahhhhh',req.body)
   helpers.getDogsByBreed(req.body.data,function(obj){
-    console.log(obj,req.body)
-    res.send(obj)
+    console.log('OHMYGOD',obj)
+    for(var i = 0; i < JSON.parse(obj.body).message.length; i++){
+      var temp = new Save.Favorites({img:JSON.parse(obj.body).message[i]})
+      temp.save(function(err){
+        if(err){
+          console.log(err)
+        }
+      })
+    }
   })
 })
 

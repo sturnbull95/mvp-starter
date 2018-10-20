@@ -5,7 +5,6 @@ const controller = {
   },
   post: (req,res) => {
     const {name,img} = req.body
-    console.log('MEH',name,img)
     db.Favorites.create({name,img},function(err,data){
       if(err){
         console.log(err)
@@ -15,17 +14,19 @@ const controller = {
     });
   },
   delete: (req,res) => {
-    console.log(req)
-    const {name} = req.body;
-    db.Favorites.destroy({
-      where: {name}
+    console.log(req.body)
+    const img = req.body.data;
+    db.Favorites.remove({
+      img
     }).then(data => res.status(203).send('deleted')).catch(err => console.error(err))
-  },
-  put: (req,res) => {
-    const {name, newName} = req.body;
-    Favorites.update({name,newName},{where:{name}})
-    .then(data => {res.status(202).send('updated')})
-    .catch(err => console.error(err))
   }
+
+  // ,
+  // put: (req,res) => {
+  //   const {name, newName} = req.body;
+  //   Favorites.update({name,newName},{where:{name}})
+  //   .then(data => {res.status(202).send('updated')})
+  //   .catch(err => console.error(err))
+  // }
 }
 module.exports = controller;

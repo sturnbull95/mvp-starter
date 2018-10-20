@@ -6,5 +6,5 @@ router.route('/favorites')
 .get(controller.get)
 .post(controller.post)
 .delete(controller.delete)
-.put(controller.put);
+//.put(controller.put);
 module.exports = router;

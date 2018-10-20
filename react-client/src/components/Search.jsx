@@ -24,9 +24,9 @@ class Search extends React.Component {
 
   render() {
     return (<div>
-      <h4>Add more repos!</h4>
+      <h4>Add more dogs to your collection!</h4>
       Enter a breed: <input id="val" value={this.state.term} onChange={this.onChange}/>
-      <button onClick={this.search}> Add Repos </button>
+      <button onClick={this.search}> Add Dogs </button>
     </div>)
   }
 }

@@ -27,17 +27,10 @@ class App extends React.Component {
   onClick(term){
     console.log(term)
     $.ajax({
-      method: "POST",
+      method: "DELETE",
       url: "/api/favorites",
-      data: {data: term}
-    })
-  .done(res => {
-    console.log(res)
-    this.setState({
-      items: JSON.parse(res.body).message
-    })
-    console.log('LSKDJFLSDJFL',res)
-  });
+      data:{data:term.img}
+    }).done(res => console.log(res))
   }
   search (term) {
     console.log(`${term} was searched`);
@@ -47,6 +40,7 @@ class App extends React.Component {
       data: {data: term}
     })
   .done(res => {
+    //res.send(JSON.parse(res.body).message)
     console.log(JSON.parse(res.body).message)
     this.setState({
       items: JSON.parse(res.body).message

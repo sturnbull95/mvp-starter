@@ -5,7 +5,7 @@ const db = require('../database-mongo');
 let getDogsByBreed = (breed, callback) => {
 
   let options = {
-    url: `https://dog.ceo/api/breed/${breed}/images`,
+    url: `https://dog.ceo/api/breed/${breed}/images/random/5`,
     headers: {
       'User-Agent': 'request',
       'key': `token ${config.API_KEY}`
