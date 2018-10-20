@@ -24,6 +24,14 @@ class App extends React.Component {
       }
     });
   }
+  click(){
+    console.log('hello')
+    if(document.getElementById('pics').style.display === 'none'){
+      document.getElementById('pics').style.display = ''
+    } else{
+      document.getElementById('pics').style.display = 'none';
+    }
+  }
   onClick(term){
     console.log(term)
     $.ajax({
@@ -34,27 +42,29 @@ class App extends React.Component {
   }
   search (term) {
     console.log(`${term} was searched`);
-    $.ajax({
-      method: "POST",
-      url: "/favorites",
-      data: {data: term}
-    })
-  .done(res => {
-    //res.send(JSON.parse(res.body).message)
-    console.log(JSON.parse(res.body).message)
-    this.setState({
-      items: JSON.parse(res.body).message
-    })
-    console.log('LSKDJFLSDJFL',res)
-  });
-
+    if(term.length > 0){
+      $.ajax({
+        method: "POST",
+        url: "/favorites",
+        data: {data: term}
+      })
+    .done(res => {
+      //res.send(JSON.parse(res.body).message)
+      console.log(JSON.parse(res.body).message)
+      this.setState({
+        items: JSON.parse(res.body).message
+      })
+      console.log('LSKDJFLSDJFL',res)
+    });
+    }
   }
 
   render () {
     return (<div>
-      <p> HELLO </p>
-      <h1>Item List</h1>
+      <h1>My Favorite Dogs</h1><button onClick={this.click}>All Breeds</button>
+      <div id="pics">
       <List items={this.state.items} click={this.onClick.bind(this)}/>
+      </div>
       <Search repos = {this.state.repos} onSearch={this.search.bind(this)}/>
     </div>)
   }

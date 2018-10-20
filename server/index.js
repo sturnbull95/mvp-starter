@@ -22,6 +22,11 @@ app.use('/api',router)
 // UNCOMMENT FOR ANGULAR
 // app.use(express.static(__dirname + '/../angular-client'));
 // app.use(express.static(__dirname + '/../node_modules'));
+app.post('/types',function(req,res){
+  helpers.getTypes(function(obj){
+
+  })
+})
 app.post('/favorites', function(req,res){
   console.log('Ahhhhh',req.body)
   helpers.getDogsByBreed(req.body.data,function(obj){
@@ -37,13 +42,13 @@ app.post('/favorites', function(req,res){
   })
 })
 
-app.post('/api/favorites', function(req,res){
-  console.log(req.body)
-  // helpers.getDogsByBreed(req.body.data,function(obj){
-  //   console.log(obj,req.body)
-  //   res.send(obj)
-  // })
-})
+// app.post('/api/favorites', function(req,res){
+//   console.log(req.body)
+//   // helpers.getDogsByBreed(req.body.data,function(obj){
+//   //   console.log(obj,req.body)
+//   //   res.send(obj)
+//   // })
+// })
 // app.post('/spec/favorites', function(req,res){
 //   console.log(req.body)
 //
